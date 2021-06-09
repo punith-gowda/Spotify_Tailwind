@@ -155,9 +155,57 @@
         </div>
       </div>
       <!-- play Bar -->
-      <div class="w-full bg-light flex justify-between px-3" style="height: 12h;">
-        <div>
-          
+      <div
+        class="w-full p-5 h-100 bg-light flex justify-between px-3 border-t border-dark"
+        style="height: 12vh;"
+      >
+        <div class="flex h-full items-center">
+          <div>
+            <h1 class="text-sm text-white tracking-wide mb-1">Summer in the city - remastered</h1>
+            <h2 class="text-xs text-lightest tracking-wide">The Loving Spoonful</h2>
+          </div>
+          <i class="material-icons text-base text-green mx-4">favorite</i>
+          <i class="material-icons text-base text-lightest hover:text-white">picture_in_picture</i>
+        </div>
+        <div class="flex flex-col justify-center w-1/3 items-center">
+          <div class="flex items-center">
+            <button class="mx-5 text-lightest focus:outline-none hover:text-white">
+              <i class="text-lg material-icons">shuffle</i>
+            </button>
+            <button class="text-lightest focus:outline-none hover:text-white">
+              <i class="text-lg material-icons">skip_previous</i>
+            </button>
+            <button
+              @click.prevent="playsong('song.mp3')"
+              class="rounded-full focus:outline-none flex items-center mx-5 justify-center h-8 w-8 border-lightest border text-lightest hover:text-white"
+            >
+              <i v-if="play" class="material-icons">play_arrow</i>
+              <i v-else class="material-icons">pause</i>
+            </button>
+            <button class="text-lightest focus:outline-none hover:text-white">
+              <i class="text-lg material-icons">skip_next</i>
+            </button>
+            <button class="mx-5 focus:outline-none text-lightest hover:text-white">
+              <i class="text-lg material-icons">repeat</i>
+            </button>
+          </div>
+          <div class="w-full flex items-center">
+            <p class="text-white text-xs mt-5 mr-2">0:27</p>
+            <div class="h-1 w-full bg-lightest rounded-full mt-5 flex items-center">
+              <div class="h-full w-2/4 bg-green"></div>
+              <div class="w-3 h-3 rounded-full bg-white shadow"></div>
+            </div>
+            <p class="text-lightest text-xs mt-5 ml-2">1:27</p>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <i class="material-icons text-2xl text-lightest">playlist_play</i>
+          <i class="material-icons text-base text-lightest mx-3">important_devices</i>
+          <i class="material-icons text-lg text-lightest mr-2">volume_up</i>
+          <div class="w-20 h-1 bg-lightest rounded-full flex items-center">
+            <div class="h-full w-1/4 bg-white"></div>
+            <div class="w-3 h-3 rounded-full bg-white shadow"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -179,6 +227,11 @@
 export default {
   data() {
     return {
+      setID: "home",
+      showDropDown: true,
+      play: true,
+      count: 0,
+      audio: null,
       pages: [
         { id: "home", name: "Home", icon: "home" },
         { id: "search", name: "Search", icon: "search" },
@@ -188,8 +241,6 @@ export default {
         { id: "1", name: "Create Playlist", icon: "add" },
         { id: "2", name: "Liked Songs", icon: "favorite" },
       ],
-      setID: "home",
-      showDropDown: false,
       albums: [
         { name: "drive" },
         { name: "drive2" },
@@ -203,6 +254,24 @@ export default {
         { icon: "keyboard_arrow_right" },
       ],
     };
+  },
+  methods: {
+    playsong(song) {
+      if (song) {
+        if (this.count == 0) {
+          this.audio = new Audio(song);
+          this.count = 100;
+          this.audio.play();
+        } else {
+          if (this.play) {
+            this.audio.play();
+          } else {
+            this.audio.pause();
+          }
+        }
+      }
+      this.play = !this.play;
+    },
   },
 };
 </script>
